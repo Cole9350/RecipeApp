@@ -1,5 +1,5 @@
 //
-//  RecipeAppApp.swift
+//  RecipeApp.swift
 //  RecipeApp
 //
 //  Created by Shawn Cole on 10/28/24.

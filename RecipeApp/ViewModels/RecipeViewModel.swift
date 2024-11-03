@@ -12,6 +12,15 @@ import os
 class RecipeViewModel: ObservableObject {
     @Published var recipes: [Recipe] = []
     @Published var errorMessage: String?
+    @Published var searchText: String = ""
+    
+    var searchResults: [Recipe] {
+        if searchText.isEmpty {
+            return recipes
+        } else {
+            return recipes.filter { $0.name.contains(searchText) || $0.cuisine.contains(searchText)}
+        }
+    }
 
     private let service = RecipeService()
     private let logger = AppLogger.shared
