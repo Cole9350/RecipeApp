@@ -17,7 +17,7 @@ class RecipeService {
     }
     
     func fetchRecipes() async throws -> [Recipe] {
-        let logger = Logger()
+        let logger = AppLogger.shared
         logger.info("Begin Fetching Images")
         let url = URL(string: "https://d3jbb8n5wk0qxi.cloudfront.net/recipes.json")!
         let (data, _) = try await session.data(from: url)

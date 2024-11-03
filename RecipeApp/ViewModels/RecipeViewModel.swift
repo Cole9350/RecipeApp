@@ -14,7 +14,7 @@ class RecipeViewModel: ObservableObject {
     @Published var errorMessage: String?
 
     private let service = RecipeService()
-    private let logger = Logger()
+    private let logger = AppLogger.shared
 
     func loadRecipes() async {
         do {
@@ -51,5 +51,9 @@ class RecipeViewModel: ObservableObject {
             logger.error("Failed to fetch image: \(self.errorMessage ?? "")")
         }
         return nil
+    }
+    
+    func clearImageCache() {
+        ImageCache.shared.clearCache()
     }
 }

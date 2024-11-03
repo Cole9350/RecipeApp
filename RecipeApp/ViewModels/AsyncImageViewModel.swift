@@ -10,6 +10,7 @@ import Combine
 
 class AsyncImageViewModel: ObservableObject {
     @Published var uiImage: UIImage?
+    let logger = AppLogger.shared
     
     func loadImage(from url: URL) async {
         // Check the cache first
@@ -31,7 +32,7 @@ class AsyncImageViewModel: ObservableObject {
                 }
             }
         } catch {
-            print("Failed to load image from \(url): \(error)")
+            logger.error("Failed to load image from \(url): \(error)")
         }
     }
 }

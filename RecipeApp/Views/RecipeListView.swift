@@ -34,6 +34,7 @@ struct RecipeListView: View {
                 await viewModel.loadRecipes()
             }
             .refreshable {
+                viewModel.clearImageCache()
                 await viewModel.loadRecipes()
             }
         }

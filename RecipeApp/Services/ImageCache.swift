@@ -12,7 +12,7 @@ class ImageCache {
     static let shared = ImageCache()
     private let cache = NSCache<NSString, UIImage>()
     private let fileManager = FileManager.default
-    private let logger = Logger()
+    private let logger = AppLogger.shared
 
     // Get image from cache or disk
     func getImage(for url: URL) -> UIImage? {
@@ -54,6 +54,34 @@ class ImageCache {
         let encodedURL = url.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? "default"
         
         return documentsPath.appendingPathComponent(encodedURL).path
+    }
+    
+    // Clears both the in-memory cache and the disk cache.
+    func clearCache() {
+        clearMemoryCache()
+        clearDiskCache()
+    }
+
+    // Clears the in-memory NSCache.
+    private func clearMemoryCache() {
+        cache.removeAllObjects()
+        logger.debug("In-memory image cache cleared.")
+    }
+
+    // Clears the disk cache by removing all cached image files.
+    private func clearDiskCache() {
+        let cachesDirectory = fileManager.urls(for: .cachesDirectory, in: .userDomainMask).first!
+        do {
+            let cachedFiles = try fileManager.contentsOfDirectory(atPath: cachesDirectory.path)
+            for file in cachedFiles {
+                let filePath = cachesDirectory.appendingPathComponent(file).path
+                try fileManager.removeItem(atPath: filePath)
+                logger.debug("Removed cached image file at path: \(filePath)")
+            }
+            logger.debug("Disk image cache cleared.")
+        } catch {
+            logger.error("Error clearing disk cache: \(error.localizedDescription)")
+        }
     }
 }
 
